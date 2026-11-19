@@ -1,10 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
+import os from "node:os";
 import { assertSafeVaultPath, SecurityError } from "../src/modules/obsidian/security.js";
 
 describe("Security Jail: assertSafeVaultPath", () => {
-  const mockVaultRoot = path.resolve("C:\\Users\\noaga\\Documents\\Obsidian Vault");
+  const mockVaultRoot = path.resolve(os.tmpdir(), "mock-obsidian-vault");
 
   it("should allow valid relative paths inside the vault", () => {
     const safePath = "01 - Projets/Repo-Doctor.md";

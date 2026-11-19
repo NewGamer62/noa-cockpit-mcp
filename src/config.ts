@@ -1,8 +1,11 @@
 import path from "node:path";
+import os from "node:os";
+
+const defaultVaultPath = path.join(os.homedir(), "Documents", "Obsidian Vault");
 
 export const CONFIG = {
-  // Vault root directory
-  VAULT_ROOT: process.env.OBSIDIAN_VAULT_PATH || "C:\\Users\\noaga\\Documents\\Obsidian Vault",
+  // Vault root directory (configurable via env var, defaults to standard user documents directory)
+  VAULT_ROOT: process.env.OBSIDIAN_VAULT_PATH || defaultVaultPath,
 
   // Recognized vault poles
   POLES: [
