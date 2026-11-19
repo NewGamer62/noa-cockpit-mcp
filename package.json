@@ -1,0 +1,28 @@
+{
+  "name": "noa-cockpit-mcp",
+  "version": "1.0.0",
+  "description": "Modular MCP Cockpit Server for Noa's local developer environment",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "noa-cockpit-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "keywords": ["mcp", "model-context-protocol", "obsidian", "devops", "tooling"],
+  "author": "Noa (NewGamer62)",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.1.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
