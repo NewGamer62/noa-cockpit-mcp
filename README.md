@@ -3,10 +3,11 @@
 [![Node.js Version](https://img.shields.io/badge/Node.js-v24.13+-339933?style=flat-square&logo=node.js)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 [![MCP Protocol](https://img.shields.io/badge/MCP-v1.1+-blueviolet?style=flat-square)](https://modelcontextprotocol.io)
-[![Tests](https://img.shields.io/badge/Tests-20%20passed-brightgreen?style=flat-square)](tests)
+[![Tests](https://img.shields.io/badge/Tests-27%20passed-brightgreen?style=flat-square)](tests)
+[![Health Score](https://img.shields.io/badge/Repo--Doctor-100%2F100%20(A%2B)-success?style=flat-square)](https://github.com/NewGamer62/repo-doctor)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-> **Modular Model Context Protocol (MCP) Server connecting AI Agents (Antigravity, Cursor, Claude Code) to Noa's Obsidian Second Brain, Git diagnostics, and local developer workflows.**
+> **Modular Model Context Protocol (MCP) Server connecting AI Agents (Antigravity, Cursor, Claude Code) to Noa's Obsidian Second Brain, Git diagnostics, PII privacy guards, and local developer workflows.**
 
 ---
 
@@ -19,8 +20,8 @@
   "id": 1,
   "method": "tools/call",
   "params": {
-    "name": "system_inspect_port",
-    "arguments": { "port": 3000 }
+    "name": "privacy_guard_scan",
+    "arguments": { "repo_path": "." }
   }
 }
 
@@ -31,7 +32,7 @@
   "result": {
     "content": [{
       "type": "text",
-      "text": "{\n  \"port\": 3000,\n  \"occupied\": true,\n  \"pid\": 14208,\n  \"processName\": \"node.exe\",\n  \"state\": \"LISTENING\",\n  \"localAddress\": \"0.0.0.0:3000\"\n}"
+      "text": "{\n  \"clean\": true,\n  \"repo_path\": \"C:\\\\Users\\\\...\\\\noa-cockpit-mcp\",\n  \"scanned_files_count\": 20,\n  \"violations_count\": 0,\n  \"violations\": []\n}"
     }]
   }
 }
@@ -42,15 +43,16 @@
 ## 🎯 Architecture & Modules
 
 `noa-cockpit-mcp` implémente le standard ouvert **Model Context Protocol (MCP)** en transport `stdio`.  
-L'architecture est découpée en **modules indépendants** :
+L'architecture est découpée en **3 modules indépendants** :
 
 ```mermaid
-flowchart LR
-    Agent["🤖 Agent IA (Antigravity)"] <-->|"stdio (JSON-RPC 2.0)"| Server["noa-cockpit-mcp"]
+flowchart TD
+    Agent["🤖 Agent IA (Antigravity, Cursor, Claude Code)"] <-->|"stdio (JSON-RPC 2.0)"| Server["noa-cockpit-mcp"]
     
     subgraph Modules["Modules Métier"]
-        Server <--> M1["Module Obsidian Brain"]
-        Server <--> M2["Module Système & Dev Tooling"]
+        Server <--> M1["Module 1 : Obsidian Brain"]
+        Server <--> M2["Module 2 : Système & Dev Tooling"]
+        Server <--> M3["Module 3 : Workflow & Privacy"]
     end
     
     M1 --> Security["assertSafeVaultPath (Security Jail)"]
@@ -58,17 +60,22 @@ flowchart LR
     
     M2 --> Ports["Ports & Zombie Process Killer"]
     M2 --> RepoDoc["repo-doctor Bridge"]
+    
+    M3 --> Privacy["poucave-pas-tout (PII & Secret Scanner)"]
+    M3 --> Branches["Git Branch Cleaner"]
+    M3 --> Dash["Dashboard & Morning Briefing Bridge"]
 ```
 
 ### 🛡️ Sécurité & Garde-Fous
 1. **Sandbox Vault Jail :** Toute tentative d'accès en dehors du coffre Obsidian (`../../Desktop`, `C:\Windows`, null bytes) est interceptée par une `SecurityError`.
 2. **Protection Processus Système :** Le tueur de ports refuse catégoriquement d'interrompre les processus système critiques (PIDs 0 et 4, `svchost.exe`, `explorer.exe`, `csrss.exe`, `services.exe`, etc.).
+3. **Anti-Leak PII & Confidentialité :** Le scanner de confidentialité inspecte les chemins machine en dur (`C:\Users\...`), les numéros de téléphone et les fichiers sensibles avant tout commit ou push.
 
 ---
 
-## 🛠️ Les 8 Outils MCP Disponibles
+## 🛠️ Les 11 Outils MCP Disponibles
 
-### Module 1 : Obsidian Brain
+### Module 1 : Obsidian Brain (Tranche 1)
 | Outil MCP | Description | Paramètres Clés |
 | :--- | :--- | :--- |
 | `obsidian_search_notes` | Recherche filtrée par texte, tag et pôle thématique | `query`, `tag`, `pole`, `limit` |
@@ -77,12 +84,19 @@ flowchart LR
 | `obsidian_add_backlog_task` | Ajout d'une tâche cochable dans Backlog.md par priorité/domaine | `priority (P1/P2/P3)`, `domain`, `task` |
 | `obsidian_get_moc` | Extraction des notes liées depuis l'un des 7 Hubs/MOCs | `moc (Index-Projets, Index-Stack, ...)` |
 
-### Module 2 : Système & Dev Tooling
+### Module 2 : Système & Dev Tooling (Tranche 2)
 | Outil MCP | Description | Paramètres Clés |
 | :--- | :--- | :--- |
 | `system_inspect_port` | Inspecte le PID et le nom du processus écoutant sur un port TCP | `port (1-65535)` |
 | `system_free_port` | Tue le processus occupant un port (avec protection système) | `port`, `force (boolean)` |
 | `git_health_audit` | Déclenche un audit de santé complet d'un repo via `repo-doctor` | `repo_path`, `min_score (0-100)` |
+
+### Module 3 : Workflow, Privacy & Git Hygiene (Tranche 3)
+| Outil MCP | Description | Paramètres Clés |
+| :--- | :--- | :--- |
+| `privacy_guard_scan` | Audite un dépôt pour interdire les fuites de chemins machine, PII et secrets (`poucave-pas-tout`) | `repo_path`, `staged_only (boolean)` |
+| `git_cleanup_branches` | Détecte et supprime en toute sécurité les branches locales déjà mergées dans master/main | `repo_path`, `dry_run (boolean)`, `base_branch` |
+| `dashboard_get_briefing` | Récupère le briefing matinal, les 3 priorités du jour et l'état du serveur local (port 5050) | `custom_dir (optional)` |
 
 ---
 
@@ -100,7 +114,7 @@ npm install
 # Compiler le projet TypeScript
 npm run build
 
-# Lancer la suite complète de 20 tests unitaires
+# Lancer la suite complète de 27 tests unitaires
 npm test
 
 # Démarrer le serveur en écoute stdio

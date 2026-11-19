@@ -1,6 +1,6 @@
 {
   "name": "noa-cockpit-mcp",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Modular MCP Cockpit Server for Noa's local developer environment",
   "type": "module",
   "main": "dist/index.js",
