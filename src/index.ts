@@ -4,16 +4,20 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CONFIG } from "./config.js";
 import { ObsidianService } from "./modules/obsidian/service.js";
 import { registerObsidianTools } from "./modules/obsidian/tools.js";
+import { registerSystemTools } from "./modules/system/tools.js";
 
 async function run() {
   const server = new McpServer({
     name: "noa-cockpit-mcp",
-    version: "1.0.0",
+    version: "1.1.0",
   });
 
-  // Initialize Obsidian Module
+  // Module 1: Obsidian Brain
   const obsidianService = new ObsidianService(CONFIG.VAULT_ROOT);
   registerObsidianTools(server, obsidianService);
+
+  // Module 2: System & Dev Tooling
+  registerSystemTools(server);
 
   // Connect via stdio transport
   const transport = new StdioServerTransport();
