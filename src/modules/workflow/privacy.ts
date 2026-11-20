@@ -135,16 +135,22 @@ export function scanPrivacyGuard(
     const ext = path.extname(relFile).toLowerCase();
 
     // 1. Vérification nom de fichier interdit
-    for (const pattern of FORBIDDEN_FILE_PATTERNS) {
-      if (pattern.test(baseName)) {
-        violations.push({
-          file: relFile,
-          line: 1,
-          rule: 'pii_forbidden_file',
-          severity: 'BLOCKER',
-          message: `Fichier sensible ou dump personnel interdit de commit (${baseName})`,
-          snippet: baseName,
-        });
+    const isTemplate = /\.(?:example|sample|template|dist)$/i.test(baseName);
+    const isDesignTokens = /tokens\.json$/i.test(baseName) && /(?:design|theme|styles?|tokens)/i.test(relFile);
+
+    if (!isTemplate && !isDesignTokens) {
+      for (const pattern of FORBIDDEN_FILE_PATTERNS) {
+        if (pattern.test(baseName)) {
+          violations.push({
+            file: relFile,
+            line: 1,
+            rule: 'pii_forbidden_file',
+            severity: 'BLOCKER',
+            message: `Fichier sensible ou dump personnel interdit de commit (${baseName})`,
+            snippet: baseName,
+          });
+          break;
+        }
       }
     }
 

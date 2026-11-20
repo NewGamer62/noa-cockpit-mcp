@@ -80,6 +80,17 @@ describe('Workflow & Privacy Module Tests', () => {
       assert.strictEqual(result.clean, true);
       assert.strictEqual(result.violations_count, 0);
     });
+
+    it('should allow .env.example templates and design tokens.json', () => {
+      const scanDir = path.join(tempBaseDir, 'privacy-allowed-templates');
+      fs.mkdirSync(path.join(scanDir, 'replica', 'design'), { recursive: true });
+      fs.writeFileSync(path.join(scanDir, '.env.example'), 'PORT=3000\nAPI_KEY=your_dummy_key');
+      fs.writeFileSync(path.join(scanDir, 'replica', 'design', 'tokens.json'), '{"colors": {"primary": "#123456"}}');
+
+      const result = scanPrivacyGuard(scanDir, false);
+      assert.strictEqual(result.clean, true);
+      assert.strictEqual(result.violations_count, 0);
+    });
   });
 
   describe('Git Branch Cleanup Engine', () => {
