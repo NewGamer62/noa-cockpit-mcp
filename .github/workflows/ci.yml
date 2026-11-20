@@ -22,17 +22,18 @@ jobs:
       - name: Setup Go (pour dépendance repo-doctor)
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.24'
 
       - name: Compiler repo-doctor pour tests d'intégration
         shell: bash
         run: |
           git clone https://github.com/NewGamer62/repo-doctor.git temp-rd
           cd temp-rd
-          go build -ldflags="-s -w" -o ../repo-doctor.exe .
+          go build -ldflags="-s -w" -o ../repo-doctor.exe ./cmd/repo-doctor
           cd ..
           rm -rf temp-rd
           echo "$PWD" >> $GITHUB_PATH
+          echo "REPO_DOCTOR_BIN=$PWD/repo-doctor.exe" >> $GITHUB_ENV
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
