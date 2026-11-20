@@ -1,9 +1,10 @@
 # noa-cockpit-mcp 🎛️
 
-[![Node.js Version](https://img.shields.io/badge/Node.js-v24.13+-339933?style=flat-square&logo=node.js)](https://nodejs.org)
+[![CI](https://github.com/NewGamer62/noa-cockpit-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/NewGamer62/noa-cockpit-mcp/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/NewGamer62/noa-cockpit-mcp?style=flat-square&color=blueviolet)](https://github.com/NewGamer62/noa-cockpit-mcp/releases)
+[![Node.js Version](https://img.shields.io/badge/Node.js-v22%20--%20v24-339933?style=flat-square&logo=node.js)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 [![MCP Protocol](https://img.shields.io/badge/MCP-v1.1+-blueviolet?style=flat-square)](https://modelcontextprotocol.io)
-[![Tests](https://img.shields.io/badge/Tests-27%20passed-brightgreen?style=flat-square)](tests)
 [![Health Score](https://img.shields.io/badge/Repo--Doctor-100%2F100%20(A%2B)-success?style=flat-square)](https://github.com/NewGamer62/repo-doctor)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
